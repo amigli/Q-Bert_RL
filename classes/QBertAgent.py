@@ -12,6 +12,7 @@ class QBAgent:
         epsilon_decay: float,
         final_epsilon: float,
         discount_factor: float = 0.95,
+        q_values = None
     ):
         """Initialize a Reinforcement Learning agent with an empty dictionary
         of state-action values (q_values), a learning rate and an epsilon.
@@ -25,6 +26,11 @@ class QBAgent:
             discount_factor: The discount factor for computing the Q-value
         """
         self.env = env
+        
+        if q_values == None:
+            self.q_values = defaultdict(lambda: np.zeros(env.action_space.n))
+        else:
+            self.q_values = defaultdict(lambda: np.zeros(env.action_space.n), q_values)
         self.q_values = defaultdict(lambda: np.zeros(env.action_space.n))
 
         self.lr = learning_rate
@@ -69,4 +75,10 @@ class QBAgent:
         self.training_error.append(temporal_difference)
 
     def decay_epsilon(self):
+        self.epsilon = max(self.final_epsilon, self.epsilon - self.epsilon_decay)
+
+    def get_Qvalues(self):
+        dictionary =  dict(self.q_values)
+        return dictionary
+
         self.epsilon = max(self.final_epsilon, self.epsilon - self.epsilon_decay)
