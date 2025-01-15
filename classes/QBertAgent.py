@@ -31,6 +31,7 @@ class QBAgent:
             self.q_values = defaultdict(lambda: np.zeros(env.action_space.n))
         else:
             self.q_values = defaultdict(lambda: np.zeros(env.action_space.n), q_values)
+        self.q_values = defaultdict(lambda: np.zeros(env.action_space.n))
 
         self.lr = learning_rate
         self.discount_factor = discount_factor
@@ -79,3 +80,5 @@ class QBAgent:
     def get_Qvalues(self):
         dictionary =  dict(self.q_values)
         return dictionary
+
+        self.epsilon = max(self.final_epsilon, self.epsilon - self.epsilon_decay)
