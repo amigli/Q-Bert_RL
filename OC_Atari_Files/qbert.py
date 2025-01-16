@@ -62,6 +62,10 @@ class Cube(GameObject):
         self.wh = (20, 5)
         self.hud = False
 
+    def __str__(self):
+        super().__str__()
+        return f'Cubo(Position: {str(self._xy)}, color: {str(self.rgb)})\n'
+
 
 class Disk(GameObject):
     """
@@ -153,6 +157,7 @@ class Score(GameObject):
         self.rgb = 210, 210, 64
         self.hud = True
 
+    
 
 class Lives(GameObject):
     """
