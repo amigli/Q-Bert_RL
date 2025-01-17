@@ -6,6 +6,7 @@ from tqdm import tqdm
 import pickle 
 from gymnasium.wrappers import RecordEpisodeStatistics, RecordVideo
 from tqdm import tqdm
+from classes.utils import bcd_to_decimal
 
 
 gym.register_envs(ale_py)
@@ -52,7 +53,7 @@ for episode in tqdm(range(n_episodes)):
         # print(str(obs) + "- Lenght: " + str(len(obs)))
         # print(str(next_obs) +  "- Lenght: " + str(len(obs)))
 
-        print("Score: " + str(next_obs[89])+ " " + str(next_obs[90]) + " " + str(next_obs[91]))
+        print("Score: " + str(bcd_to_decimal(next_obs[89],next_obs[90],next_obs[91])))
         #print("Lives: " + str(obs_wrapper[29]))
 
         obs_wrapper = _init_objects_ram()
