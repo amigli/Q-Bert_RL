@@ -8,7 +8,7 @@ from classes.QbertObservationWrapper import QbertObservationWrapper
 gym.register_envs(ale_py)
 # hyperparameters
 learning_rate = 0.01
-n_episodes = 1500
+n_episodes = 500
 start_epsilon = 1.0
 epsilon_decay = start_epsilon / (n_episodes / 2)  # reduce the exploration over time
 final_epsilon = 0.1
@@ -32,19 +32,29 @@ for episode in tqdm(range(n_episodes)):
     
     # play one episode
     while not done:
-        action = 0
+        action = 3
 
+        print("len obs =" + str(len(obs)))
         next_obs, reward, terminated, truncated, info = env.step(action)
         next_lives, next_obs =  next_obs[0], next_obs[1]
-        
-        #if obs[0] != None:
+
+        # if obs[0] != None:
             # print("obs: " + str(obs[0].xy))
+        
         # print("next_obs: " + str(next_obs[0]._xy))
 
         # print("Score: " + str(bcd_to_decimal(next_obs[89],next_obs[90],next_obs[91])))
         # print("Reward: " + str(reward))
+
         if next_lives < lives :
             reward -= 15
+        
+        if next_obs[0] != None:
+            if next_obs[24] != None and next_obs[24].xy == next_obs[0].xy:
+                reward -= 15
+            if next_obs[25] != None and next_obs[25].xy == next_obs[0].xy:
+                reward -= 15
+
         # update the agent
         agent.update(obs, action, reward, terminated, next_obs)
 
