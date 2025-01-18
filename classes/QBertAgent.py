@@ -1,6 +1,7 @@
 from collections import defaultdict
 import gymnasium as gym
 import numpy as np
+import random as rand
 
 
 class QBAgent:
@@ -49,7 +50,12 @@ class QBAgent:
         """
         # with probability epsilon return a random action to explore the environment
         if np.random.random() < self.epsilon:
-            return self.env.action_space.sample()
+            if obs[0] != None and obs[0].xy == (74,17):
+                sequence [0, 3,5]
+                return rand.choise[sequence]
+            else:
+                sequence [0, 2, 3, 4, 5]
+                return rand.choise(sequence)
         # with probability (1 - epsilon) act greedily (exploit)
         else:
             return int(np.argmax(self.q_values[obs]))
