@@ -32,12 +32,15 @@ for episode in tqdm(range(n_episodes)):
     
     # play one episode
     while not done:
-        action = agent.get_action(obs[1])
+        action = 0
 
         next_obs, reward, terminated, truncated, info = env.step(action)
         next_lives, next_obs =  next_obs[0], next_obs[1]
-
         
+        #if obs[0] != None:
+            # print("obs: " + str(obs[0].xy))
+        # print("next_obs: " + str(next_obs[0]._xy))
+
         # print("Score: " + str(bcd_to_decimal(next_obs[89],next_obs[90],next_obs[91])))
         # print("Reward: " + str(reward))
         if next_lives < lives :
