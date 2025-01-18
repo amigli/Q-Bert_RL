@@ -8,7 +8,7 @@ from classes.QbertObservationWrapper import QbertObservationWrapper
 gym.register_envs(ale_py)
 # hyperparameters
 learning_rate = 0.01
-n_episodes = 2000
+n_episodes = 1500
 start_epsilon = 1.0
 epsilon_decay = start_epsilon / (n_episodes / 2)  # reduce the exploration over time
 final_epsilon = 0.1
@@ -28,24 +28,27 @@ agent = QBAgent(
 for episode in tqdm(range(n_episodes)):
     obs, info = env.reset()
     done = False
-    
+    lives, obs =  obs[0], obs[1]
     
     # play one episode
     while not done:
-        action = agent.get_action(obs)
+        action = agent.get_action(obs[1])
 
         next_obs, reward, terminated, truncated, info = env.step(action)
+        next_lives, next_obs =  next_obs[0], next_obs[1]
 
         
         # print("Score: " + str(bcd_to_decimal(next_obs[89],next_obs[90],next_obs[91])))
         # print("Reward: " + str(reward))
-
+        if next_lives < lives :
+            reward -= 15
         # update the agent
         agent.update(obs, action, reward, terminated, next_obs)
 
         # update if the environment is done and the current obs
         done = terminated or truncated
         obs = next_obs
+        lives = next_lives
 
     agent.decay_epsilon()
 
@@ -63,12 +66,19 @@ env = RecordEpisodeStatistics(env, buffer_length=num_eval_episodes)
 
 for episode_num in range(num_eval_episodes):
     obs, info = env.reset()
+    lives, obs =  obs[0], obs[1]
+
     done = False
 
     while not done:
         action = agent.get_action(obs)
-        obs, reward, terminated, truncated, info = env.step(action)
+        next_obs, reward, terminated, truncated, info = env.step(action)
+        next_lives, obs =  next_obs[0], next_obs[1]
+
+        if next_lives < lives :
+            reward -= 15
         
+        lives = next_lives
         done = terminated or truncated
 env.close()
 
@@ -80,23 +90,3 @@ print("Training terminato")
 
 
 
-"""
-history_sets = []
-history_count = []
-for i in range(128):
-    history_count.append(0)
-
-for i in range(128):
-    history_sets.append(set())
-
-for j in range(128):
-    for i in range(len(history)):
-        elem = history[i][j]
-        # print(j)
-        history_sets[j].add(elem)
-
-for i in range(128):
-    print("Position:" + str(i) + ", count:" + str(len(history_sets[i])))
-
-# print(history_sets)
-"""
