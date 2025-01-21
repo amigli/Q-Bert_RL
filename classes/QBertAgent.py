@@ -15,23 +15,8 @@ class QBAgent:
         discount_factor: float = 0.95,
         q_values = None
     ):
-        """Initialize a Reinforcement Learning agent with an empty dictionary
-        of state-action values (q_values), a learning rate and an epsilon.
-
-        Args:
-            env: The training environment
-            learning_rate: The learning rate
-            initial_epsilon: The initial epsilon value
-            epsilon_decay: The decay for epsilon
-            final_epsilon: The final epsilon value
-            discount_factor: The discount factor for computing the Q-value
-        """
         self.env = env
         
-        if q_values == None:
-            self.q_values = defaultdict(lambda: np.zeros(env.action_space.n))
-        else:
-            self.q_values = defaultdict(lambda: np.zeros(env.action_space.n), q_values)
         self.q_values = defaultdict(lambda: np.zeros(env.action_space.n))
 
         self.lr = learning_rate
@@ -44,19 +29,14 @@ class QBAgent:
         self.training_error = []
 
     def get_action(self, obs: tuple[int, int, bool]) -> int:
-        """
-        Returns the best action with probability (1 - epsilon)
-        otherwise a random action with probability epsilon to ensure exploration.
-        """
-        # with probability epsilon return a random action to explore the environment
+        
         if np.random.random() < self.epsilon:
             if obs[0] != None and obs[0].xy == (74,17):
-                sequence [0, 3,5]
-                return rand.choise[sequence]
+                sequence = [0, 3,5]
+                return rand.choice(sequence)
             else:
-                sequence [0, 2, 3, 4, 5]
-                return rand.choise(sequence)
-        # with probability (1 - epsilon) act greedily (exploit)
+                sequence = [0, 2, 3, 4, 5]
+                return rand.choice(sequence)
         else:
             return int(np.argmax(self.q_values[obs]))
 
