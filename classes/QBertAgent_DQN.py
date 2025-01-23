@@ -48,6 +48,7 @@ class DQNAgent:
         for state, action, reward, next_state, done in minibatch:
             target = reward
             if not done:
+                print(self.model(torch.tensor(next_state, dtype=torch.float32)))
                 target = reward + self.gamma * torch.max(self.model(torch.tensor(next_state, dtype=torch.float32))).item()
             target_f = self.model(torch.tensor(state, dtype=torch.float32)).numpy()
             target_f[action] = target
