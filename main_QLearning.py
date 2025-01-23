@@ -10,7 +10,7 @@ gym.register_envs(ale_py)
 learning_rate = 0.01
 n_episodes = 1000
 start_epsilon = 1.0
-epsilon_decay = start_epsilon / (n_episodes / 2)  # reduce the exploration over time
+epsilon_decay = start_epsilon / (n_episodes / 2)  
 final_epsilon = 0.1
 
 ## TRAINING 
@@ -24,7 +24,6 @@ agent = QBAgent(
     final_epsilon=final_epsilon,
 )
 
-# history = []
 for episode in tqdm(range(n_episodes)):
     obs, info = env.reset()
     done = False
@@ -40,7 +39,6 @@ for episode in tqdm(range(n_episodes)):
         # update the agent
         agent.update(obs, action, reward, terminated, next_obs)
 
-        # update if the environment is done and the current obs
         done = terminated or truncated
         obs = next_obs
 

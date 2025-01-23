@@ -15,6 +15,4 @@ class RewardFunction():
             if obs[25] != None and obs[25].xy == obs[0].xy:
                 reward -= 15
 
-    
-        
         return reward
