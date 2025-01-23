@@ -17,7 +17,7 @@ final_epsilon = 0.1
 ## TRAINING 
 env = gym.make("ALE/Qbert-ram-v5")  
 env =  QbertObservationWrapper(env)
-agent = QBAgent(
+agent = SARSAAgent(
     env=env,
     learning_rate=learning_rate,
     initial_epsilon=start_epsilon,
@@ -25,31 +25,45 @@ agent = QBAgent(
     final_epsilon=final_epsilon,
 )
 
-# history = []
+rewards = []
+
 for episode in tqdm(range(n_episodes)):
     obs, info = env.reset()
     done = False
+    total_reward = 0
     rewardFunction = RewardFunction(obs[0])
     obs = obs[1]
     while not done:
-        action = 3
+        action = agent.get_action(obs)
 
         next_obs, reward, terminated, truncated, info = env.step(action)
-        reward = rewardFunction.calculate_reward(next_obs, reward)
+        
+        #print(next_obs[0])
+        
+        reward = rewardFunction.calculate_reward(next_obs, reward)        
+        
         next_obs = next_obs[1]
-
+        
+        next_action = agent.get_action(next_obs)
         # update the agent
-        agent.update(obs, action, reward, terminated, next_obs)
+        agent.update(obs, action, reward, terminated, next_obs, next_action)
 
         # update if the environment is done and the current obs
         done = terminated or truncated
         obs = next_obs
 
+        action = next_action
+        
+        total_reward += reward
+
+        print(total_reward)
+
     agent.decay_epsilon()
+    rewards.append(total_reward)
 
 env.close()
 
-
+"""
 num_eval_episodes = 10
 
 env = gym.make("ALE/Qbert-ram-v5", render_mode="rgb_array")  
@@ -77,8 +91,5 @@ env.close()
 print(f'Episode time taken: {env.time_queue}')
 print(f'Episode total rewards: {env.return_queue}')
 print(f'Episode lengths: {env.length_queue}')
-
+"""
 print("Training terminato")
-
-
-
