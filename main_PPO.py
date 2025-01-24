@@ -10,7 +10,7 @@ gym.register_envs(ale_py)
 
 ## TRAINING 
 env = gym.make("ALE/Qbert-ram-v5")  
-env = ObsRewardWrapperc(env)
+env = ObsRewardWrapper(env)
 
 model = PPO(
     "MlpPolicy",      # Tipo di rete neurale (MLP per osservazioni vettoriali)
