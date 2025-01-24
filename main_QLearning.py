@@ -1,10 +1,10 @@
-from classes.QBertAgent_QLearning import QBAgent
+from Algorithms.QBertAgent_QLearning import QBAgent
 import gymnasium as gym
 import ale_py
 from tqdm import tqdm
 from gymnasium.wrappers import RecordEpisodeStatistics, RecordVideo
-from classes.QbertObservationWrapper import QbertObservationWrapperTuple
-from classes.RewardFunction import RewardFunction
+from EnvironmentWrappers.QbertObservationWrapper import QbertObservationWrapperTuple
+from EnvironmentWrappers.RewardFunction import RewardFunction
 gym.register_envs(ale_py)
 
 # hyperparameters

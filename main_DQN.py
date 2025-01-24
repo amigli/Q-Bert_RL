@@ -2,9 +2,9 @@ import gymnasium as gym
 import ale_py
 from tqdm import tqdm
 from gymnasium.wrappers import RecordEpisodeStatistics, RecordVideo
-from classes.QbertObservationWrapper import QbertObservationWrapperBox
-from classes.QBertAgent_DQN import DQNAgent
-from classes.RewardFunction import RewardFunction
+from EnvironmentWrappers.QbertObservationWrapper import QbertObservationWrapperBox
+from Algorithms.QBertAgent_DQN import DQNAgent
+from EnvironmentWrappers.RewardFunction import RewardFunction
 gym.register_envs(ale_py)
 # hyperparameters
 

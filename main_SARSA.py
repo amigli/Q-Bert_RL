@@ -1,10 +1,10 @@
-from classes.QBertAgent_SARSA import SARSAAgent
+from Algorithms.QBertAgent_SARSA import SARSAAgent
 import gymnasium as gym
 import ale_py
 from tqdm import tqdm
 from gymnasium.wrappers import RecordEpisodeStatistics, RecordVideo
-from classes.QbertObservationWrapper import QbertObservationWrapper
-from classes.RewardFunction import RewardFunction
+from EnvironmentWrappers.QbertObservationWrapper import QbertObservationWrapper
+from EnvironmentWrappers.RewardFunction import RewardFunction
 gym.register_envs(ale_py)
 
 # hyperparameters
