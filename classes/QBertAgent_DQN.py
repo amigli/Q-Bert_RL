@@ -29,7 +29,9 @@ class DQNAgent:
         self.epsilon = epsilon
         self.epsilon_decay = epsilon_decay
         self.memory = deque(maxlen=buffer_size)
-        self.model = DQN(state_dim, action_dim)
+
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.model = DQN(state_dim, action_dim).to(self.device)
         self.optimizer = optim.Adam(self.model.parameters(), lr=lr)
 
     def act(self, state):
@@ -46,15 +48,21 @@ class DQNAgent:
             return
         minibatch = random.sample(self.memory, batch_size)
         for state, action, reward, next_state, done in minibatch:
+            state = torch.tensor(state, dtype=torch.float32).to(self.device)  
+            next_state = torch.tensor(next_state, dtype=torch.float32).to(self.device) 
             target = reward
             if not done:
-                print(self.model(torch.tensor(next_state, dtype=torch.float32)))
-                target = reward + self.gamma * torch.max(self.model(torch.tensor(next_state, dtype=torch.float32))).item()
-            target_f = self.model(torch.tensor(state, dtype=torch.float32)).numpy()
+                target = reward + self.gamma * torch.max(self.model(next_state)).item()
+            
+            target_f = self.model(state).detach().cpu().numpy() 
             target_f[action] = target
+            
+            target_f_tensor = torch.tensor(target_f, dtype=torch.float32).to(self.device)
+            
             self.optimizer.zero_grad()
-            loss = nn.MSELoss()(torch.tensor(target_f), self.model(torch.tensor(state, dtype=torch.float32)))
+            loss = nn.MSELoss()(target_f_tensor, self.model(state))
             loss.backward()
             self.optimizer.step()
+
         if self.epsilon > 0.01:
             self.epsilon *= self.epsilon_decay
