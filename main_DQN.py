@@ -6,7 +6,6 @@ from EnvironmentWrappers.QbertObservationWrapper import QbertObservationWrapperB
 from Algorithms.QBertAgent_DQN import DQNAgent
 from EnvironmentWrappers.RewardFunction import RewardFunction
 gym.register_envs(ale_py)
-# hyperparameters
 
 learning_rate = 0.01
 n_episodes = 1000

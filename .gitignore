@@ -9,7 +9,8 @@
 /.idea
 /__pycache__
 /RLVenv
-/classes/__pycache__
+/Algorithms/__pycache__
+/EnvironmentWrappers/__pycache__
 saved_agent
 /OC_Atari_Files/__pycache__
 /videos_first
