@@ -28,8 +28,8 @@ class SARSALambdaAgent:
         self.training_error = []
         self.eligibility_traces = defaultdict(lambda: np.zeros(env.action_space.n))
 
-    def get_action(self, obs):
-        if np.random.random() < self.epsilon:
+    def get_action(self, obs, train):
+        if train and np.random.random() < self.epsilon:
             return self.env.action_space.sample()
         else:
             return int(np.argmax(self.q_values[obs]))

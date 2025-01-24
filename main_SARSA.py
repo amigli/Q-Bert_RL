@@ -3,7 +3,7 @@ import gymnasium as gym
 import ale_py
 from tqdm import tqdm
 from gymnasium.wrappers import RecordEpisodeStatistics, RecordVideo
-from EnvironmentWrappers.QbertObservationWrapper import QbertObservationWrapper
+from EnvironmentWrappers.QbertObservationWrapper import QbertObservationWrapperTuple
 from EnvironmentWrappers.RewardFunction import RewardFunction
 gym.register_envs(ale_py)
 
@@ -16,7 +16,7 @@ final_epsilon = 0.1
 
 ## TRAINING 
 env = gym.make("ALE/Qbert-ram-v5")  
-env =  QbertObservationWrapper(env)
+env =  QbertObservationWrapperTuple(env)
 agent = SARSAAgent(
     env=env,
     learning_rate=learning_rate,
@@ -34,7 +34,7 @@ for episode in tqdm(range(n_episodes)):
     rewardFunction = RewardFunction(obs[0])
     obs = obs[1]
     while not done:
-        action = agent.get_action(obs)
+        action = agent.get_action(obs, True)
 
         next_obs, reward, terminated, truncated, info = env.step(action)
         
@@ -44,7 +44,7 @@ for episode in tqdm(range(n_episodes)):
         
         next_obs = next_obs[1]
         
-        next_action = agent.get_action(next_obs)
+        next_action = agent.get_action(next_obs, True)
         # update the agent
         agent.update(obs, action, reward, terminated, next_obs, next_action)
 
@@ -56,7 +56,7 @@ for episode in tqdm(range(n_episodes)):
         
         total_reward += reward
 
-        print(total_reward)
+        # print(total_reward)
 
     agent.decay_epsilon()
     rewards.append(total_reward)
