@@ -4,19 +4,13 @@ from stable_baselines3.common.evaluation import evaluate_policy
 import ale_py
 from tqdm import tqdm
 from gymnasium.wrappers import RecordEpisodeStatistics, RecordVideo
-from EnvironmentWrappers.QbertObservationWrapper import QbertObservationWrapperBox
-from EnvironmentWrappers.RewardFunction import RewardFunction
-from EnvironmentWrappers.RewardFunctionWrapper import RewardFunctionWrapper
+from EnvironmentWrappers.ObsRewardWrapper import ObsRewardWrapper
 
 gym.register_envs(ale_py)
 
 ## TRAINING 
 env = gym.make("ALE/Qbert-ram-v5")  
-env =  QbertObservationWrapperBox(env)
-
-reward_function = RewardFunction(init_lives=3)
-
-env = RewardFunctionWrapper(env, reward_function)
+env = ObsRewardWrapper(env)
 
 model = PPO(
     "MlpPolicy",      # Tipo di rete neurale (MLP per osservazioni vettoriali)
