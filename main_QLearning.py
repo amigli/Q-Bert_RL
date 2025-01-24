@@ -1,22 +1,22 @@
-from classes.QBertAgent_SARSA import SARSAAgent
+from classes.QBertAgent_QLearning import QBAgent
 import gymnasium as gym
 import ale_py
 from tqdm import tqdm
 from gymnasium.wrappers import RecordEpisodeStatistics, RecordVideo
-from classes.QbertObservationWrapper import QbertObservationWrapper
+from classes.QbertObservationWrapper import QbertObservationWrapperTuple
 from classes.RewardFunction import RewardFunction
 gym.register_envs(ale_py)
 
 # hyperparameters
 learning_rate = 0.01
-n_episodes = 1000
+n_episodes = 100
 start_epsilon = 1.0
 epsilon_decay = start_epsilon / (n_episodes / 2)  # reduce the exploration over time
 final_epsilon = 0.1
 
 ## TRAINING 
 env = gym.make("ALE/Qbert-ram-v5")  
-env =  QbertObservationWrapper(env)
+env =  QbertObservationWrapperTuple(env)
 agent = QBAgent(
     env=env,
     learning_rate=learning_rate,
@@ -49,6 +49,7 @@ for episode in tqdm(range(n_episodes)):
 
 env.close()
 
+agent.save_Qvalues()
 
 num_eval_episodes = 10
 

@@ -2,7 +2,7 @@ from collections import defaultdict
 import gymnasium as gym
 import numpy as np
 import random as rand
-
+import pickle
 
 class QBAgent:
     def __init__(
@@ -16,7 +16,6 @@ class QBAgent:
         q_values = None
     ):
         self.env = env
-        
         self.q_values = defaultdict(lambda: np.zeros(env.action_space.n))
 
         self.lr = learning_rate
@@ -63,8 +62,6 @@ class QBAgent:
     def decay_epsilon(self):
         self.epsilon = max(self.final_epsilon, self.epsilon - self.epsilon_decay)
 
-    def get_Qvalues(self):
-        dictionary =  dict(self.q_values)
-        return dictionary
-
-        self.epsilon = max(self.final_epsilon, self.epsilon - self.epsilon_decay)
+    def save_Qvalues(self):
+        with open("q_values.pkl", "wb") as f:
+            pickle.dump(dict(self.q_values), f)

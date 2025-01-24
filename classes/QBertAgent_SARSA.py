@@ -28,7 +28,6 @@ class SARSAAgent:
         
 
     def get_action(self, obs) -> int:
-        
         if np.random.random() < self.epsilon:
             if obs[0] != None and obs[0].xy == (74,17):
                 sequence = [0, 3, 5]
