@@ -9,7 +9,7 @@ gym.register_envs(ale_py)
 
 # hyperparameters
 learning_rate = 0.01
-n_episodes = 100
+n_episodes = 1200
 start_epsilon = 1.0
 epsilon_decay = start_epsilon / (n_episodes / 2)  # reduce the exploration over time
 final_epsilon = 0.1
@@ -49,12 +49,10 @@ for episode in tqdm(range(n_episodes)):
 
 env.close()
 
-agent.save_Qvalues()
-
 num_eval_episodes = 10
 
 env = gym.make("ALE/Qbert-ram-v5", render_mode="rgb_array")  
-env =  QbertObservationWrapper(env)  
+env =  QbertObservationWrapperTuple(env)  
 env = RecordVideo(env, video_folder="videos_first", name_prefix="eval",
                   episode_trigger=lambda x: True)
 env = RecordEpisodeStatistics(env, buffer_length=num_eval_episodes)
