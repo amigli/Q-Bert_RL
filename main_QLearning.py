@@ -32,7 +32,7 @@ for episode in tqdm(range(n_episodes)):
     rewardFunction = RewardFunction(obs[0])
     obs = obs[1]
     while not done:
-        action = 3
+        action = agent.get_action(obs)
 
         next_obs, reward, terminated, truncated, info = env.step(action)
         reward = rewardFunction.calculate_reward(next_obs, reward)
