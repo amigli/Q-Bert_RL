@@ -4,7 +4,7 @@ from stable_baselines3.common.evaluation import evaluate_policy
 import ale_py
 from tqdm import tqdm
 from gymnasium.wrappers import RecordEpisodeStatistics, RecordVideo
-from EnvironmentWrappers.QbertObservationWrapper import QbertObservationWrapper
+from EnvironmentWrappers.QbertObservationWrapper import QbertObservationWrapperBox
 from EnvironmentWrappers.RewardFunction import RewardFunction
 from EnvironmentWrappers.RewardFunctionWrapper import RewardFunctionWrapper
 
@@ -12,7 +12,7 @@ gym.register_envs(ale_py)
 
 ## TRAINING 
 env = gym.make("ALE/Qbert-ram-v5")  
-env =  QbertObservationWrapper(env)
+env =  QbertObservationWrapperBox(env)
 
 reward_function = RewardFunction(init_lives=3)
 
