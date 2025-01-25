@@ -27,9 +27,14 @@ class ObsRewardWrapper(gym.Wrapper):
             # Inserimento dei colori dei cubi:
             for i in range(21):
                 j = i+1
-                newobs.append(obs[j].rgb[0])
-                newobs.append(obs[j].rgb[1])
-                newobs.append(obs[j].rgb[2])
+                if obs[j] != None:
+                    newobs.append(obs[j].rgb[0])
+                    newobs.append(obs[j].rgb[1])
+                    newobs.append(obs[j].rgb[2])
+                else:
+                     newobs.append(0)
+                    newobs.append(0)
+                    newobs.append(0)
 
             # Inserimento delle posizioni dei dischi di salvataggio
             if obs[23] != None :
