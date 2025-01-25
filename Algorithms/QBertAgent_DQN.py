@@ -44,31 +44,31 @@ class DQNAgent:
     def remember(self, state, action, reward, next_state, done):
         self.memory.append((state, action, reward, next_state, done))
 
-def replay(self, batch_size):
-    if len(self.memory) < batch_size:
-        return
+    def replay(self, batch_size):
+        if len(self.memory) < batch_size:
+            return
 
-    # Estrazione di un minibatch
-    minibatch = random.sample(self.memory, batch_size)
+        # Estrazione di un minibatch
+        minibatch = random.sample(self.memory, batch_size)
 
-    for state, action, reward, next_state, done in minibatch:
-        state = torch.tensor(state, dtype=torch.float32).to(self.device)
-        next_state = torch.tensor(next_state, dtype=torch.float32).to(self.device)
-        reward = torch.tensor(reward, dtype=torch.float32).to(self.device)
-        action = torch.tensor(action, dtype=torch.long).to(self.device)
-        
-        target = reward
-        if not done:
-            target = reward + self.gamma * torch.max(self.model(next_state)).detach()
-        
-        q_values = self.model(state)
-        target_f = q_values.clone()  
-        target_f[action] = target
+        for state, action, reward, next_state, done in minibatch:
+            state = torch.tensor(state, dtype=torch.float32).to(self.device)
+            next_state = torch.tensor(next_state, dtype=torch.float32).to(self.device)
+            reward = torch.tensor(reward, dtype=torch.float32).to(self.device)
+            action = torch.tensor(action, dtype=torch.long).to(self.device)
+            
+            target = reward
+            if not done:
+                target = reward + self.gamma * torch.max(self.model(next_state)).detach()
+            
+            q_values = self.model(state)
+            target_f = q_values.clone()  
+            target_f[action] = target
 
-        self.optimizer.zero_grad()
-        loss = nn.MSELoss()(q_values, target_f)
-        loss.backward()
-        self.optimizer.step()
+            self.optimizer.zero_grad()
+            loss = nn.MSELoss()(q_values, target_f)
+            loss.backward()
+            self.optimizer.step()
 
-    if self.epsilon > 0.01:
-        self.epsilon *= self.epsilon_decay
+        if self.epsilon > 0.01:
+            self.epsilon *= self.epsilon_decay
