@@ -36,11 +36,11 @@ class QBAgent:
             else:
                 sequence = [2, 3, 4, 5]
                 return rand.choice(sequence)"""
-            return self.env.action_space.sample()
+            sequence = [0, 2, 3, 4, 5]
+            return rand.choice(sequence)
         else:
             action = int(np.argmax(self.q_values[obs]))
-            if not(train):
-                print("Ho scelto il meglio!" + str(action))
+            """ if not(train): print("Ho scelto il meglio!" + str(action))"""
             return action
     def update(
         self,
