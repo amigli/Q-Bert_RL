@@ -35,10 +35,11 @@ class DQNAgent:
         self.optimizer = optim.Adam(self.model.parameters(), lr=lr)
 
     def act(self, state, train):
+        state_tensor = torch.tensor(state, dtype=torch.float32).to(self.device)
         if train and np.random.rand() <= self.epsilon:
             return np.random.choice(self.action_dim)
 
-        q_values = self.model(torch.tensor(state, dtype=torch.float32))
+        q_values = self.model(state_tensor)
         return torch.argmax(q_values).item()
 
     def remember(self, state, action, reward, next_state, done):
