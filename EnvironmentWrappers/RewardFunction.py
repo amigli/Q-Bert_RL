@@ -43,10 +43,10 @@ class RewardFunction():
 
         if obs[0] != None:
             if obs[24] != None and obs[24].xy == obs[0].xy:
-                print("Scontro con avversario 1")
+                # print("Scontro con avversario 1")
                 calculated_reward = 0 - 2
             if obs[25] != None and obs[25].xy == obs[0].xy:
-                print("Scontro con avversario 1")
+                # print("Scontro con avversario 1")
                 calculated_reward = 0 - 2
                 
         """if calculated_reward == 0:
