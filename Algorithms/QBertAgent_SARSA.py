@@ -25,6 +25,8 @@ class SARSAAgent:
 
         self.q_values = defaultdict(lambda: np.zeros(env.action_space.n))
 
+        self.training_error = []
+
         
 
     def get_action(self, obs, train) -> int:
@@ -49,6 +51,8 @@ class SARSAAgent:
             td_target = reward + self.discount_factor * self.q_values[next_obs][next_action]
             td_error = td_target - self.q_values[obs][action]
             self.q_values[obs][action] += self.lr * td_error
+
+        self.training_error.append(td_error)
 
 
     def decay_epsilon(self):
