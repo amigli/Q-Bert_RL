@@ -52,7 +52,7 @@ class SARSAAgent:
             td_error = td_target - self.q_values[obs][action]
             self.q_values[obs][action] += self.lr * td_error
 
-        self.training_error.append(td_error)
+            self.training_error.append(td_error)
 
 
     def decay_epsilon(self):
