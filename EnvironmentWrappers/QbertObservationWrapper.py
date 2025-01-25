@@ -27,9 +27,17 @@ class QbertObservationWrapperBox(ObservationWrapper):
                 newobs.append(obs[j].rgb[1])
                 newobs.append(obs[j].rgb[2])
 
+
             # Inserimento delle posizioni dei dischi di salvataggio
-            newobs.append(obs[23].xy[0])
-            newobs.append(obs[23].xy[1])
+            if obs[23] != None :
+                # Inserimento delle posizioni dei dischi di salvataggio
+                newobs.append(obs[23].xy[0])
+                newobs.append(obs[23].xy[1])
+            else:
+                newobs.append(0)
+                newobs.append(0)
+
+        
 
             if obs[24] != None :
                 # Inserimento delle coordinate di coily
