@@ -7,7 +7,7 @@ import numpy as np
 class ObsRewardWrapper(gym.Wrapper):
     def __init__(self, env):
         super(ObsRewardWrapper, self).__init__(env)
-        self.reward_function = RewardFunction(init_lives=3)
+        self.reward_function = RewardFunction(init_lives=4)
         self.observation_space = gym.spaces.Box(
             low=-np.inf, high=np.inf, shape=(75,), dtype=np.float32
         )
