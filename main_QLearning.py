@@ -9,7 +9,7 @@ gym.register_envs(ale_py)
 
 # hyperparameters
 learning_rate = 0.01
-n_episodes = 1200
+n_episodes = 100
 start_epsilon = 1.0
 epsilon_decay = start_epsilon / (n_episodes / 2)  # reduce the exploration over time
 final_epsilon = 0.1
@@ -33,7 +33,7 @@ for episode in tqdm(range(n_episodes)):
     obs = obs[1]
     while not done:
         action = agent.get_action(obs, True)
-
+        # print(action)
         next_obs, reward, terminated, truncated, info = env.step(action)
         reward = rewardFunction.calculate_reward(next_obs, reward)
         next_obs = next_obs[1]
@@ -59,6 +59,8 @@ env = RecordEpisodeStatistics(env, buffer_length=num_eval_episodes)
 
 
 for episode_num in range(num_eval_episodes):
+    print(f"Stato osservato: {obs}")  # Debug per lo stato osservato
+    print(f"Valori Q per lo stato {obs}: {agent.q_values[obs]}")  # Debug per i valori Q
     obs, info = env.reset()
     rewardFunction = RewardFunction(obs[0])
     obs = obs[1]
