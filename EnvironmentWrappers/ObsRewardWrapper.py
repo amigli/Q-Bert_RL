@@ -32,7 +32,7 @@ class ObsRewardWrapper(gym.Wrapper):
                     newobs.append(obs[j].rgb[1])
                     newobs.append(obs[j].rgb[2])
                 else:
-                     newobs.append(0)
+                    newobs.append(0)
                     newobs.append(0)
                     newobs.append(0)
 
