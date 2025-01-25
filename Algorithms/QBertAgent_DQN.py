@@ -36,11 +36,15 @@ class DQNAgent:
 
     def act(self, state, train):
         state_tensor = torch.tensor(state, dtype=torch.float32).to(self.device)
+        if len(state_tensor.shape) == 1:
+            state_tensor = state_tensor.unsqueeze(0)  # Aggiungi dimensione batch
+
         if train and np.random.rand() <= self.epsilon:
             return np.random.choice(self.action_dim)
 
+        # Calcola i Q-values
         q_values = self.model(state_tensor)
-        return torch.argmax(q_values).item()
+        return torch.argmax(q_values, dim=1).item()
 
     def remember(self, state, action, reward, next_state, done):
         self.memory.append((state, action, reward, next_state, done))
