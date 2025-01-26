@@ -8,7 +8,7 @@ class QBAgent:
     def __init__(
         self,
         env: gym.Env,
-        learning_rate: float,
+        step_size: float,
         initial_epsilon: float,
         epsilon_decay: float,
         final_epsilon: float,
@@ -18,7 +18,7 @@ class QBAgent:
         self.env = env
         self.q_values = defaultdict(lambda: np.zeros(env.action_space.n))
 
-        self.lr = learning_rate
+        self.step_size = step_size
         self.discount_factor = discount_factor
 
         self.epsilon = initial_epsilon
