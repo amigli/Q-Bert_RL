@@ -58,7 +58,7 @@ class QBAgent:
         )
 
         self.q_values[obs][action] = (
-            self.q_values[obs][action] + self.lr * temporal_difference
+            self.q_values[obs][action] + self.step_size * temporal_difference
         )
         self.training_error.append(temporal_difference)
 
