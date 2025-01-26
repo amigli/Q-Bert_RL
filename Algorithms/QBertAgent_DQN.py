@@ -1,3 +1,4 @@
+
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -5,7 +6,7 @@ import numpy as np
 import random
 from collections import deque
 
-# Definizione della rete neurale feed-and-forward per DQN
+# Definizione della rete neurale feed-forward per DQN
 class DQN(nn.Module):
     def __init__(self, input_dim, output_dim):
         super(DQN, self).__init__()
@@ -19,9 +20,9 @@ class DQN(nn.Module):
         x = self.fc3(x)
         return x
 
-# Definizione della classe che rappresenta l'agente basato su DQN
+# Definizione della classe agente DQN
 class DQNAgent:
-    def __init__(self, state_dim, action_dim, lr, gamma, epsilon, epsilon_decay, buffer_size):
+    def __init__(self, state_dim, action_dim, lr, gamma, epsilon, epsilon_decay, buffer_size, model=None):
         self.state_dim = state_dim
         self.action_dim = action_dim
         self.lr = lr
@@ -31,19 +32,24 @@ class DQNAgent:
         self.memory = deque(maxlen=buffer_size)
 
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        self.model = DQN(state_dim, action_dim).to(self.device)
+
+        if model != None:
+            self.model = model
+        else:
+            self.model = DQN(state_dim, action_dim).to(self.device)
+
         self.optimizer = optim.Adam(self.model.parameters(), lr=lr)
+        self.criterion = nn.MSELoss()
 
-    def act(self, state, train):
-        state_tensor = torch.tensor(state, dtype=torch.float32).to(self.device)
-        if len(state_tensor.shape) == 1:
-            state_tensor = state_tensor.unsqueeze(0)  # Aggiungi dimensione batch
 
+    def act(self, state, train=True):
+        state_tensor = torch.tensor(state, dtype=torch.float32).to(self.device).unsqueeze(0)
         if train and np.random.rand() <= self.epsilon:
             return np.random.choice(self.action_dim)
 
-        # Calcola i Q-values
-        q_values = self.model(state_tensor)
+        with torch.no_grad():
+            q_values = self.model(state_tensor)
+
         return torch.argmax(q_values, dim=1).item()
 
     def remember(self, state, action, reward, next_state, done):
@@ -53,27 +59,27 @@ class DQNAgent:
         if len(self.memory) < batch_size:
             return
 
-        # Estrazione di un minibatch
         minibatch = random.sample(self.memory, batch_size)
 
-        for state, action, reward, next_state, done in minibatch:
-            state = torch.tensor(state, dtype=torch.float32).to(self.device)
-            next_state = torch.tensor(next_state, dtype=torch.float32).to(self.device)
-            reward = torch.tensor(reward, dtype=torch.float32).to(self.device)
-            action = torch.tensor(action, dtype=torch.long).to(self.device)
-            
-            target = reward
-            if not done:
-                target = reward + self.gamma * torch.max(self.model(next_state)).detach()
-            
-            q_values = self.model(state)
-            target_f = q_values.clone()  
-            target_f[action] = target
+        states, actions, rewards, next_states, dones = zip(*minibatch)
+        states = torch.tensor(states, dtype=torch.float32).to(self.device)
+        next_states = torch.tensor(next_states, dtype=torch.float32).to(self.device)
+        rewards = torch.tensor(rewards, dtype=torch.float32).to(self.device)
+        actions = torch.tensor(actions, dtype=torch.long).to(self.device)
+        dones = torch.tensor(dones, dtype=torch.float32).to(self.device)
 
-            self.optimizer.zero_grad()
-            loss = nn.MSELoss()(q_values, target_f)
-            loss.backward()
-            self.optimizer.step()
+        q_values = self.model(states)
+        q_values = q_values.gather(1, actions.unsqueeze(1)).squeeze(1)
+        next_q_values = self.model(next_states).max(1)[0]
+        targets = rewards + (1 - dones) * self.gamma * next_q_values
+
+        self.optimizer.zero_grad()
+        loss = self.criterion(q_values, targets.detach())
+        loss.backward()
+        self.optimizer.step()
 
         if self.epsilon > 0.01:
             self.epsilon *= self.epsilon_decay
+
+    def save(self, dir):
+        torch.save(self.model.state_dict(), dir)
