@@ -7,7 +7,7 @@ class SARSALambdaAgent:
     def __init__(
         self,
         env: gym.Env,
-        learning_rate: float,
+        step_size: float,
         initial_epsilon: float,
         epsilon_decay: float,
         final_epsilon: float,
@@ -17,7 +17,7 @@ class SARSALambdaAgent:
         self.env = env
         self.q_values = defaultdict(lambda: np.zeros(env.action_space.n))
 
-        self.lr = learning_rate
+        self.step_size = step_size
         self.discount_factor = discount_factor
         self.lambda_ = lambda_
 
@@ -53,7 +53,7 @@ class SARSALambdaAgent:
         self.eligibility_traces[obs][action] += 1
         # Backwardview = aggiorno gli stati passati in base all'egibility trace
         for state_action, trace_value in self.eligibility_traces.items():
-            self.q_values[state_action] += self.lr * td_error * trace_value
+            self.q_values[state_action] += self.step_size * td_error * trace_value
             self.eligibility_traces[state_action] *= self.discount_factor * self.lambda_
 
         self.training_error.append(td_error)

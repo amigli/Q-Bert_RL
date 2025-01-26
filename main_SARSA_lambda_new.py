@@ -8,7 +8,7 @@ from EnvironmentWrappers.ObsRewardWrapper import ObsRewardWrapper
 gym.register_envs(ale_py)
 
 # hyperparameters
-learning_rate = 0.01
+step_size = 0.01
 n_episodes = 10
 start_epsilon = 1.0
 epsilon_decay = start_epsilon / (n_episodes / 2)  # reduce the exploration over time
@@ -19,7 +19,7 @@ env = gym.make("ALE/Qbert-ram-v5")
 env =  ObsRewardWrapper(env)
 agent = SARSALambdaAgent(
     env=env,
-    learning_rate=learning_rate,
+    step_size=step_size,
     initial_epsilon=start_epsilon,
     epsilon_decay=epsilon_decay,
     final_epsilon=final_epsilon,
