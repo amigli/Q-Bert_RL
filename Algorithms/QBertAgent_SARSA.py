@@ -8,7 +8,7 @@ class SARSAAgent:
     def __init__(
         self,
         env: gym.Env,
-        learning_rate: float,
+        step_size: float,
         initial_epsilon: float,
         epsilon_decay: float,
         final_epsilon: float,
@@ -16,7 +16,7 @@ class SARSAAgent:
     ):
         self.env = env
         
-        self.lr = learning_rate
+        self.step_size = step_size
         self.discount_factor = discount_factor
         
         self.epsilon = initial_epsilon
@@ -50,7 +50,7 @@ class SARSAAgent:
         if not terminated:
             td_target = reward + self.discount_factor * self.q_values[next_obs][next_action]
             td_error = td_target - self.q_values[obs][action]
-            self.q_values[obs][action] += self.lr * td_error
+            self.q_values[obs][action] += self.step_size * td_error
 
             self.training_error.append(td_error)
 
