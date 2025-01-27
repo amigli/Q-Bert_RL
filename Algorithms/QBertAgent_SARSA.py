@@ -30,11 +30,17 @@ class SARSAAgent:
         
 
     def get_action(self, obs, train) -> int:
-        if train and np.random.random() < self.epsilon:
-            sequence = [0, 2, 3, 4, 5]
-            return rand.choice(sequence)
+         if train and  np.random.random() < self.epsilon:
+            if obs[0] == 74 and obs[1] == 17:
+                sequence = [3,5]
+                return rand.choice(sequence)
+            else:
+                sequence = [0, 2, 3, 4, 5]
+                return rand.choice(sequence)
         else:
-            return int(np.argmax(self.q_values[obs]))
+            action = int(np.argmax(self.q_values[obs]))
+            """ if not(train): print("Ho scelto il meglio!" + str(action))"""
+            return action
 
     def update(
         self,

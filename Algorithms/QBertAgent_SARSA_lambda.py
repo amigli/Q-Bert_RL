@@ -29,10 +29,17 @@ class SARSALambdaAgent:
         self.eligibility_traces = defaultdict(lambda: np.zeros(env.action_space.n))
 
     def get_action(self, obs, train):
-        if train and np.random.random() < self.epsilon:
-            return self.env.action_space.sample()
+        if train and  np.random.random() < self.epsilon:
+            if obs[0] == 74 and obs[1] == 17:
+                sequence = [3,5]
+                return rand.choice(sequence)
+            else:
+                sequence = [0, 2, 3, 4, 5]
+                return rand.choice(sequence)
         else:
-            return int(np.argmax(self.q_values[obs]))
+            action = int(np.argmax(self.q_values[obs]))
+            """ if not(train): print("Ho scelto il meglio!" + str(action))"""
+            return action
 
     def update(
         self,

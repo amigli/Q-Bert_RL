@@ -7,15 +7,15 @@ class RewardFunction():
         # print("Reward ambiente:" + str(reward))
         match reward:
             case 25:
-                calculated_reward = 2
+                calculated_reward = 1
             case 100:
-                calculated_reward = 2.5
+                calculated_reward = 1.5
             case 300:
-                calculated_reward = 3
+                calculated_reward = 2
             case 500:
-                calculated_reward = 3.5
+                calculated_reward = 2.5
             case 3100:
-                calculated_reward = 5
+                calculated_reward = 4
             case _:
                 if reward > 0:
                     calculated_reward = 3.5 # Bonus che QBert può ricevere in alcuni round
@@ -37,9 +37,12 @@ class RewardFunction():
   
         # print("next_lives:" + str(next_lives) + ", old_lives:" + str(self.lives))
         if next_lives < self.lives :
-            calculated_reward = 0 - 1
+            calculated_reward = 0 - 5
             self.lives = next_lives
             # print("Morto")
+
+        if next_lives == 0:
+            calculated_reward = 0 - 10
 
         if obs[0] != None:
             if obs[24] != None and obs[24].xy == obs[0].xy:
