@@ -45,8 +45,14 @@ class DQNAgent:
     def act(self, state, train=True):
         state_tensor = torch.tensor(state, dtype=torch.float32).to(self.device).unsqueeze(0)
         if train and np.random.rand() <= self.epsilon:
-            return np.random.choice(self.action_dim)
-
+             if train and  np.random.random() < self.epsilon:
+            if obs[0] == 74 and obs[1] == 17:
+                sequence = [3,5]
+                return rand.choice(sequence)
+            else:
+                sequence = [0, 2, 3, 4, 5]
+                return rand.choice(sequence)
+        
         with torch.no_grad():
             q_values = self.model(state_tensor)
 
