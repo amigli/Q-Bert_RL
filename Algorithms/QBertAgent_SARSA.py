@@ -30,7 +30,7 @@ class SARSAAgent:
         
 
     def get_action(self, obs, train) -> int:
-         if train and  np.random.random() < self.epsilon:
+        if train and  np.random.random() < self.epsilon:
             if obs[0] == 74 and obs[1] == 17:
                 sequence = [3,5]
                 return rand.choice(sequence)
