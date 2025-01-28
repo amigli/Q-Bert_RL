@@ -2,6 +2,7 @@ from collections import defaultdict
 import gymnasium as gym
 import numpy as np
 import pickle
+import random as rand
 
 class SARSALambdaAgent:
     def __init__(
