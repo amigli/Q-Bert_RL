@@ -67,8 +67,8 @@ class DQNAgent:
         minibatch = random.sample(self.memory, batch_size)
 
         states, actions, rewards, next_states, dones = zip(*minibatch)
-        states = torch.tensor(states, dtype=torch.float32).to(self.device)
-        next_states = torch.tensor(next_states, dtype=torch.float32).to(self.device)
+        states = torch.tensor(np.array(states), dtype=torch.float32).to(self.device)
+        next_states = torch.tensor(np.array(next_states), dtype=torch.float32).to(self.device)
         rewards = torch.tensor(rewards, dtype=torch.float32).to(self.device)
         actions = torch.tensor(actions, dtype=torch.long).to(self.device)
         dones = torch.tensor(dones, dtype=torch.float32).to(self.device)
