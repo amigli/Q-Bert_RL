@@ -47,10 +47,10 @@ class DQNAgent:
         if train and np.random.rand() <= self.epsilon:
             if state[0] == 74 and state[1] == 17:
                 sequence = [3,5]
-                return rand.choice(sequence)
+                return random.choice(sequence)
             else:
                 sequence = [0, 2, 3, 4, 5]
-                return rand.choice(sequence)
+                return random.choice(sequence)
         
         with torch.no_grad():
             q_values = self.model(state_tensor)

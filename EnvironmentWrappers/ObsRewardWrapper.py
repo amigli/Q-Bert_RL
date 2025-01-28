@@ -23,63 +23,64 @@ class ObsRewardWrapper(gym.Wrapper):
             # Inserimento delle coordinate del giocatore
             newobs.append(obs[0].xy[0])
             newobs.append(obs[0].xy[1])
-
-            # Inserimento dei colori dei cubi:
-            for i in range(21):
-                j = i+1
-                if obs[j] != None:
-                    newobs.append(obs[j].rgb[0])
-                    newobs.append(obs[j].rgb[1])
-                    newobs.append(obs[j].rgb[2])
-                else:
-                    newobs.append(0)
-                    newobs.append(0)
-                    newobs.append(0)
-
-            # Inserimento delle posizioni dei dischi di salvataggio
-            if obs[23] != None :
-                # Inserimento delle posizioni dei dischi di salvataggio
-                newobs.append(obs[23].xy[0])
-                newobs.append(obs[23].xy[1])
-            else:
-                newobs.append(0)
-                newobs.append(0)
-
-            if obs[24] != None :
-                # Inserimento delle coordinate di coily
-                newobs.append(obs[24].xy[0])
-                newobs.append(obs[24].xy[1])
-            else:
-                newobs.append(0)
-                newobs.append(0)
-
-            if obs[25] != None :
-                # Inserimento delle coordinate di Purple Ball
-                newobs.append(obs[25].xy[0])
-                newobs.append(obs[25].xy[1])
-            else:
-                newobs.append(0)
-                newobs.append(0)
-
-            if obs[26] != None :
-                # Inserimento delle coordinate di Purple Ball
-                newobs.append(obs[26].xy[0])
-                newobs.append(obs[26].xy[1])
-            else:
-                newobs.append(0)
-                newobs.append(0)
-
-            if obs[26] != None :
-                # Inserimento delle coordinate di Sam
-                newobs.append(obs[27].xy[0])
-                newobs.append(obs[27].xy[1])
-            else: 
-                newobs.append(0)
-                newobs.append(0)
-              
-            newobs = np.array(newobs)
         else:
-            newobs =  np.zeros(75)
+            newobs.append(0)
+            newobs.append(0)
+            
+        # Inserimento dei colori dei cubi:
+        for i in range(21):
+            j = i+1
+            if obs[j] != None:
+                newobs.append(obs[j].rgb[0])
+                newobs.append(obs[j].rgb[1])
+                newobs.append(obs[j].rgb[2])
+            else:
+                newobs.append(0)
+                newobs.append(0)
+                newobs.append(0)
+
+        # Inserimento delle posizioni dei dischi di salvataggio
+        if obs[23] != None :
+            # Inserimento delle posizioni dei dischi di salvataggio
+            newobs.append(obs[23].xy[0])
+            newobs.append(obs[23].xy[1])
+        else:
+            newobs.append(0)
+            newobs.append(0)
+
+        if obs[24] != None :
+            # Inserimento delle coordinate di coily
+            newobs.append(obs[24].xy[0])
+            newobs.append(obs[24].xy[1])
+        else:
+            newobs.append(0)
+            newobs.append(0)
+
+        if obs[25] != None :
+            # Inserimento delle coordinate di Purple Ball
+            newobs.append(obs[25].xy[0])
+            newobs.append(obs[25].xy[1])
+        else:
+            newobs.append(0)
+            newobs.append(0)
+
+        if obs[26] != None :
+            # Inserimento delle coordinate di Purple Ball
+            newobs.append(obs[26].xy[0])
+            newobs.append(obs[26].xy[1])
+        else:
+            newobs.append(0)
+            newobs.append(0)
+
+        if obs[26] != None :
+            # Inserimento delle coordinate di Sam
+            newobs.append(obs[27].xy[0])
+            newobs.append(obs[27].xy[1])
+        else: 
+            newobs.append(0)
+            newobs.append(0)
+              
+        newobs = np.array(newobs)
 
         return newobs, info
 
@@ -94,63 +95,64 @@ class ObsRewardWrapper(gym.Wrapper):
             # Inserimento delle coordinate del giocatore
             newobs.append(obs[0].xy[0])
             newobs.append(obs[0].xy[1])
-
-            # Inserimento dei colori dei cubi:
-            for i in range(21):
-                j = i+1
-                if obs[j] != None:
-                    newobs.append(obs[j].rgb[0])
-                    newobs.append(obs[j].rgb[1])
-                    newobs.append(obs[j].rgb[2])
-                else:
-                    newobs.append(0)
-                    newobs.append(0)
-                    newobs.append(0)
-
-            # Inserimento delle posizioni dei dischi di salvataggio
-            if obs[23] != None :
-                # Inserimento delle posizioni dei dischi di salvataggio
-                newobs.append(obs[23].xy[0])
-                newobs.append(obs[23].xy[1])
-            else:
-                newobs.append(0)
-                newobs.append(0)
-
-            if obs[24] != None :
-                # Inserimento delle coordinate di coily
-                newobs.append(obs[24].xy[0])
-                newobs.append(obs[24].xy[1])
-            else:
-                newobs.append(0)
-                newobs.append(0)
-
-            if obs[25] != None :
-                # Inserimento delle coordinate di Purple Ball
-                newobs.append(obs[25].xy[0])
-                newobs.append(obs[25].xy[1])
-            else:
-                newobs.append(0)
-                newobs.append(0)
-
-            if obs[26] != None :
-                # Inserimento delle coordinate di Purple Ball
-                newobs.append(obs[26].xy[0])
-                newobs.append(obs[26].xy[1])
-            else:
-                newobs.append(0)
-                newobs.append(0)
-
-            if obs[26] != None :
-                # Inserimento delle coordinate di Sam
-                newobs.append(obs[27].xy[0])
-                newobs.append(obs[27].xy[1])
-            else: 
-                newobs.append(0)
-                newobs.append(0)
-              
-            newobs = np.array(newobs)
         else:
-            newobs =  np.zeros(75)
+            newobs.append(0)
+            newobs.append(0)
+        # Inserimento dei colori dei cubi:
+        for i in range(21):
+            j = i+1
+            if obs[j] != None:
+                newobs.append(obs[j].rgb[0])
+                newobs.append(obs[j].rgb[1])
+                newobs.append(obs[j].rgb[2])
+            else:
+                newobs.append(0)
+                newobs.append(0)
+                newobs.append(0)
+
+        # Inserimento delle posizioni dei dischi di salvataggio
+        if obs[23] != None :
+            # Inserimento delle posizioni dei dischi di salvataggio
+            newobs.append(obs[23].xy[0])
+            newobs.append(obs[23].xy[1])
+        else:
+            newobs.append(0)
+            newobs.append(0)
+
+        if obs[24] != None :
+            # Inserimento delle coordinate di coily
+            newobs.append(obs[24].xy[0])
+            newobs.append(obs[24].xy[1])
+        else:
+            newobs.append(0)
+            newobs.append(0)
+
+        if obs[25] != None :
+            # Inserimento delle coordinate di Purple Ball
+            newobs.append(obs[25].xy[0])
+            newobs.append(obs[25].xy[1])
+        else:
+            newobs.append(0)
+            newobs.append(0)
+
+        if obs[26] != None :
+            # Inserimento delle coordinate di Purple Ball
+            newobs.append(obs[26].xy[0])
+            newobs.append(obs[26].xy[1])
+        else:
+            newobs.append(0)
+            newobs.append(0)
+
+        if obs[26] != None :
+            # Inserimento delle coordinate di Sam
+            newobs.append(obs[27].xy[0])
+            newobs.append(obs[27].xy[1])
+        else: 
+            newobs.append(0)
+            newobs.append(0)
+              
+        newobs = np.array(newobs)
+
         obs = (observation[8], obs, newobs)
         reward = self.reward_function.calculate_reward(obs, reward)
 
