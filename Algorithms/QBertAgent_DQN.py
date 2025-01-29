@@ -45,12 +45,12 @@ class DQNAgent:
     def act(self, state, train=True):
         state_tensor = torch.tensor(state, dtype=torch.float32).to(self.device).unsqueeze(0)
         if train and np.random.rand() <= self.epsilon:
-            if state[0] == 74 and state[1] == 17:
+            """if state[0] == 74 and state[1] == 17:
                 sequence = [3,5]
                 return random.choice(sequence)
-            else:
-                sequence = [0, 2, 3, 4, 5]
-                return random.choice(sequence)
+            else:"""
+            sequence = [0, 2, 3, 4, 5]
+            return random.choice(sequence)
         
         with torch.no_grad():
             q_values = self.model(state_tensor)
