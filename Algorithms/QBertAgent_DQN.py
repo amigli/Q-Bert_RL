@@ -26,7 +26,6 @@ class DQN(nn.Module):
         x = torch.relu(self.fc3(x))
         x = self.fc4(x)
         return x
-        return x
 
 # Definizione della classe agente DQN
 class DQNAgent:
