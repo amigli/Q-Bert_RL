@@ -4,6 +4,8 @@ import ale_py
 from tqdm import tqdm
 from gymnasium.wrappers import RecordEpisodeStatistics, RecordVideo
 from EnvironmentWrappers.ObsRewardWrapper import ObsRewardWrapper
+from EnvironmentWrappers.utils import salva_csv
+
 
 gym.register_envs(ale_py)
 
@@ -13,6 +15,11 @@ n_episodes = 10
 start_epsilon = 1.0
 epsilon_decay = start_epsilon / (n_episodes / 2)  # reduce the exploration over time
 final_epsilon = 0.1
+
+reward_per_episode = []
+step_per_episode = []
+epsilon_value = []
+
 
 ## TRAINING 
 env = gym.make("ALE/Qbert-ram-v5")  
@@ -33,6 +40,9 @@ for episode in tqdm(range(n_episodes)):
     total_reward = 0 
     action = agent.get_action(obs, True)
 
+    total_reward = 0
+    total_step = 0
+
     while not done:
         # print(action)
         next_obs, reward, terminated, truncated, info = env.step(action)
@@ -41,6 +51,8 @@ for episode in tqdm(range(n_episodes)):
         # print("action: " + str(action))
         next_action = agent.get_action(next_obs, True)
         total_reward += reward
+        total_step += 1
+        
         # update the agent
         agent.update(obs, action, reward, terminated, next_obs, next_action)
 
@@ -49,10 +61,21 @@ for episode in tqdm(range(n_episodes)):
         obs = next_obs
         action = next_action
 
+    reward_per_episode.append(total_reward)
+    step_per_episode.append(total_step)
+    epsilon_value.append(agent.epsilon)
     agent.decay_epsilon()
     # print(total_reward)
 
 env.close()
+
+salva_csv(reward_per_episode, "Reward", "csv_reward_sl.csv")
+salva_csv(step_per_episode, "Steps", "csv_steps_sl.csv")
+salva_csv(epsilon_value, "Epsilon", "csv_epsilon_sl.csv")
+
+
+
+
 ## Evaluation
 num_eval_episodes = 10
 
