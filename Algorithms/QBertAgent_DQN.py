@@ -6,18 +6,26 @@ import numpy as np
 import random
 from collections import deque
 
-# Definizione della rete neurale feed-forward per DQN
+# Definizione della rete neurale per DQN
 class DQN(nn.Module):
     def __init__(self, input_dim, output_dim):
         super(DQN, self).__init__()
-        self.fc1 = nn.Linear(input_dim, 128)
-        self.fc2 = nn.Linear(128, 128)
-        self.fc3 = nn.Linear(128, output_dim)
+        self.fc1 = nn.Linear(input_dim, 256)
+        self.ln1 = nn.LayerNorm(256)  
+        self.fc2 = nn.Linear(256, 256)
+        self.ln2 = nn.LayerNorm(256)
+        self.fc3 = nn.Linear(256, 256)
+        self.fc4 = nn.Linear(256, output_dim)
+        self.dropout = nn.Dropout(0.2) 
 
     def forward(self, x):
-        x = torch.relu(self.fc1(x))
-        x = torch.relu(self.fc2(x))
-        x = self.fc3(x)
+        x = torch.relu(self.ln1(self.fc1(x)))  
+        x = self.dropout(x)
+        x = torch.relu(self.ln2(self.fc2(x)))
+        x = self.dropout(x)
+        x = torch.relu(self.fc3(x))
+        x = self.fc4(x)
+        return x
         return x
 
 # Definizione della classe agente DQN
@@ -65,16 +73,15 @@ class DQNAgent:
             return
 
         minibatch = random.sample(self.memory, batch_size)
-
         states, actions, rewards, next_states, dones = zip(*minibatch)
+
         states = torch.tensor(np.array(states), dtype=torch.float32).to(self.device)
         next_states = torch.tensor(np.array(next_states), dtype=torch.float32).to(self.device)
         rewards = torch.tensor(rewards, dtype=torch.float32).to(self.device)
         actions = torch.tensor(actions, dtype=torch.long).to(self.device)
         dones = torch.tensor(dones, dtype=torch.float32).to(self.device)
 
-        q_values = self.model(states)
-        q_values = q_values.gather(1, actions.unsqueeze(1)).squeeze(1)
+        q_values = self.model(states).gather(1, actions.unsqueeze(1)).squeeze(1)
         next_q_values = self.model(next_states).max(1)[0]
         targets = rewards + (1 - dones) * self.gamma * next_q_values
 
