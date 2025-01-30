@@ -65,7 +65,7 @@ class ObsRewardWrapper(gym.Wrapper):
             newobs.append(0)
 
         if obs[26] != None :
-            # Inserimento delle coordinate di Purple Ball
+            # Inserimento delle coordinate di GreenBall
             newobs.append(obs[26].xy[0])
             newobs.append(obs[26].xy[1])
         else:

@@ -4,6 +4,7 @@ import ale_py
 from tqdm import tqdm
 from gymnasium.wrappers import RecordEpisodeStatistics, RecordVideo
 from EnvironmentWrappers.ObsRewardWrapper import ObsRewardWrapper
+from EnvironmentWrappers.utils import salva_csv
  
 gym.register_envs(ale_py)
 
@@ -18,7 +19,9 @@ final_epsilon = 0.1
 env = gym.make("ALE/Qbert-ram-v5")  
 env =  ObsRewardWrapper(env)
 env = RecordEpisodeStatistics(env, buffer_length=n_episodes)
-
+reward_per_episode = []
+step_per_episode = []
+epsilon_value = []
 
 agent = QBAgent(
     env=env,
@@ -35,6 +38,7 @@ for episode in tqdm(range(n_episodes)):
     obs = tuple(obs)
     # print("Episode:" + str(episode))
     total_reward = 0
+    total_step = 0
     while not done:
         action = agent.get_action(obs, True)
         # print(action)
@@ -44,17 +48,25 @@ for episode in tqdm(range(n_episodes)):
         # print("action: " + str(action))
 
         total_reward += reward
+        total_step += 1
         # update the agent
         agent.update(obs, action, reward, terminated, next_obs)
 
         # update if the environment is done and the current obs
         done = terminated or truncated
         obs = next_obs
-
+    reward_per_episode.append(total_reward)
+    step_per_episode.append(total_step)
+    epsilon_value.append(agent.epsilon)
     agent.decay_epsilon()
     # print(total_reward)
-
 env.close()
+
+salva_csv(reward_per_episode, "Reward", "csv_reward_qlearning.csv")
+salva_csv(step_per_episode, "Steps", "csv_steps_qlearning.csv")
+salva_csv(epsilon_value, "Epsilon", "csv_epsilon_qlearning.csv")
+
+
 
 ## Evaluation
 num_eval_episodes = 10
