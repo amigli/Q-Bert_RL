@@ -45,13 +45,12 @@ class DQNAgent:
     def act(self, state, train=True):
         state_tensor = torch.tensor(state, dtype=torch.float32).to(self.device).unsqueeze(0)
         if train and np.random.rand() <= self.epsilon:
-             if train and  np.random.random() < self.epsilon:
-            if obs[0] == 74 and obs[1] == 17:
+            """if state[0] == 74 and state[1] == 17:
                 sequence = [3,5]
-                return rand.choice(sequence)
-            else:
-                sequence = [0, 2, 3, 4, 5]
-                return rand.choice(sequence)
+                return random.choice(sequence)
+            else:"""
+            sequence = [0, 2, 3, 4, 5]
+            return random.choice(sequence)
         
         with torch.no_grad():
             q_values = self.model(state_tensor)
@@ -68,8 +67,8 @@ class DQNAgent:
         minibatch = random.sample(self.memory, batch_size)
 
         states, actions, rewards, next_states, dones = zip(*minibatch)
-        states = torch.tensor(states, dtype=torch.float32).to(self.device)
-        next_states = torch.tensor(next_states, dtype=torch.float32).to(self.device)
+        states = torch.tensor(np.array(states), dtype=torch.float32).to(self.device)
+        next_states = torch.tensor(np.array(next_states), dtype=torch.float32).to(self.device)
         rewards = torch.tensor(rewards, dtype=torch.float32).to(self.device)
         actions = torch.tensor(actions, dtype=torch.long).to(self.device)
         dones = torch.tensor(dones, dtype=torch.float32).to(self.device)
