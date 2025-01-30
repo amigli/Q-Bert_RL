@@ -15,7 +15,7 @@ class SARSALambdaAgent:
         lambda_: float = 0.9,
     ):
         self.env = env
-        self.q_values = defaultdict(lambda: np.zeros(env.action_space.n))
+        self.q_values = defaultdict(lambda: np.full(self.env.action_space.n, -100.0))
 
         self.step_size = step_size
         self.discount_factor = discount_factor
