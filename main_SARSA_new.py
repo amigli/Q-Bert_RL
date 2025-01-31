@@ -11,7 +11,7 @@ gym.register_envs(ale_py)
 
 # hyperparameters
 step_size = 0.01
-n_episodes = 10
+n_episodes = 1000
 start_epsilon = 1.0
 epsilon_decay = start_epsilon / (n_episodes / 2)  # reduce the exploration over time
 final_epsilon = 0.1

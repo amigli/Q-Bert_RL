@@ -23,7 +23,7 @@ class SARSAAgent:
         self.epsilon_decay = epsilon_decay
         self.final_epsilon = final_epsilon
 
-        self.q_values = defaultdict(lambda: np.full(self.env.action_space.n, -100.0))
+        self.q_values = defaultdict(lambda: np.full(self.env.action_space.n, 0))
 
         self.training_error = []
 
@@ -51,14 +51,15 @@ class SARSAAgent:
         next_obs: tuple[int, int, bool],
         next_action: int,
     ):
+        td_target = reward
 
-        """Calcolo il TD error"""
         if not terminated:
             td_target = reward + self.discount_factor * self.q_values[next_obs][next_action]
-            td_error = td_target - self.q_values[obs][action]
-            self.q_values[obs][action] += self.step_size * td_error
 
-            self.training_error.append(td_error)
+        td_error = td_target - self.q_values[obs][action]
+        self.q_values[obs][action] += self.step_size * td_error
+
+        self.training_error.append(td_error)
 
 
     def decay_epsilon(self):

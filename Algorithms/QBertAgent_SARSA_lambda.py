@@ -16,7 +16,7 @@ class SARSALambdaAgent:
         lambda_: float = 0.9,
     ):
         self.env = env
-        self.q_values = defaultdict(lambda: np.full(self.env.action_space.n, -100.0))
+        self.q_values = defaultdict(lambda: np.full(self.env.action_space.n, 0))
 
         self.step_size = step_size
         self.discount_factor = discount_factor
@@ -31,12 +31,8 @@ class SARSALambdaAgent:
 
     def get_action(self, obs, train):
         if train and  np.random.random() < self.epsilon:
-            if obs[0] == 74 and obs[1] == 17:
-                sequence = [3,5]
-                return rand.choice(sequence)
-            else:
-                sequence = [0, 2, 3, 4, 5]
-                return rand.choice(sequence)
+            sequence = [0, 2, 3, 4, 5]
+            return rand.choice(sequence)
         else:
             action = int(np.argmax(self.q_values[obs]))
             """ if not(train): print("Ho scelto il meglio!" + str(action))"""
