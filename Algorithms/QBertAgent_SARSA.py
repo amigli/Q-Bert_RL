@@ -23,7 +23,7 @@ class SARSAAgent:
         self.epsilon_decay = epsilon_decay
         self.final_epsilon = final_epsilon
 
-        self.q_values = defaultdict(lambda: np.full(self.env.action_space.n, 0))
+        self.q_values = defaultdict(lambda: np.full(self.env.action_space.n, 0.0))
 
         self.training_error = []
 
