@@ -72,7 +72,7 @@ class ObsRewardWrapper(gym.Wrapper):
             newobs.append(0)
             newobs.append(0)
 
-        if obs[26] != None :
+        if obs[27] != None :
             # Inserimento delle coordinate di Sam
             newobs.append(obs[27].xy[0])
             newobs.append(obs[27].xy[1])
@@ -143,7 +143,7 @@ class ObsRewardWrapper(gym.Wrapper):
             newobs.append(0)
             newobs.append(0)
 
-        if obs[26] != None :
+        if obs[27] != None :
             # Inserimento delle coordinate di Sam
             newobs.append(obs[27].xy[0])
             newobs.append(obs[27].xy[1])
