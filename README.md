@@ -12,4 +12,4 @@ To run project locally, follow this procedure:
 **Note**: to run the jupyther notebook you can simply use Google Colab.
 
 ## Credits
-This project use some code extracted from the repository (OC_Atari)[https://github.com/k4ntz/OC_Atari]
+This project use some code extracted from the repository [OC_Atari](https://github.com/k4ntz/OC_Atari)
